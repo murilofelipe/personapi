@@ -72,4 +72,11 @@ public class PersonService {
                 .message(s + id2)
                 .build();
     }
+
+	public void delete(Long id) throws PersonNotFoundException {
+        personRepository.findById(id)
+                .orElseThrow(() -> new PersonNotFoundException(id));
+
+        personRepository.deleteById(id);
+    }
 }
