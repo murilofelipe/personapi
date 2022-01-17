@@ -1,5 +1,7 @@
 package com.dio.personapi.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +36,8 @@ public class PersonController {
 	}
 	
 	@GetMapping
-	public String getBook() {
-		return "API Test";
-	}
+    public List<PersonDTO> listAll() {
+        return personService.listAll();
+    }
 
 }

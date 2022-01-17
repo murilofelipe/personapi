@@ -1,5 +1,8 @@
 package com.dio.personapi.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +15,14 @@ import com.dio.personapi.repository.PersonRepository;
 @Service
 public class PersonService {
 	
-	@Autowired
 	private PersonRepository personRepository;
 	
-	private PersonMapper personMapper;
+	private PersonMapper personMapper = PersonMapper.INSTANCE;
 	
+	@Autowired
+	public PersonService(PersonRepository personRepository) {
+		this.personRepository = personRepository;
+	}
 	
 	public MessageResponseDTO createPerson(PersonDTO personDTO) {
 		Person personToSave = PersonMapper.INSTANCE.toModel(personDTO);
@@ -27,4 +33,13 @@ public class PersonService {
 				.message("Created Person with ID: " + savedPerson.getId())
 				.build();
 	}
+	
+	public List<PersonDTO> listAll() {
+        List<Person> people = personRepository.findAll();
+//        System.out.println(people);
+//        System.out.println(people.stream());
+//        System.out.println(people.stream().map(personMapper::toDTO));
+//        System.out.println(people.stream().map(personMapper::toDTO).collect(Collectors.toList()));
+        return people.stream().map(personMapper::toDTO).collect(Collectors.toList());
+    }
 }
