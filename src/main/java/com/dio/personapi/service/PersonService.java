@@ -10,6 +10,7 @@ import com.dio.personapi.dto.mapper.PersonMapper;
 import com.dio.personapi.dto.request.PersonDTO;
 import com.dio.personapi.dto.response.MessageResponseDTO;
 import com.dio.personapi.entity.Person;
+import com.dio.personapi.exception.PersonNotFoundException;
 import com.dio.personapi.repository.PersonRepository;
 
 @Service
@@ -42,4 +43,11 @@ public class PersonService {
 //        System.out.println(people.stream().map(personMapper::toDTO).collect(Collectors.toList()));
         return people.stream().map(personMapper::toDTO).collect(Collectors.toList());
     }
+
+	public PersonDTO findById(Long id) throws PersonNotFoundException{
+		 Person person = personRepository.findById(id)
+	                .orElseThrow(() -> new PersonNotFoundException(id));
+
+	        return personMapper.toDTO(person);
+	}
 }
